@@ -23,14 +23,22 @@ public class SecurityConfig {
                 .password("password")
                 .roles("USER")
                 .build();
+        UserDetails admin = User.withDefaultPasswordEncoder()
+                .username("admin")
+                .password("admin")
+                .roles("ADMIN")
+                .build();
 
-        return new InMemoryUserDetailsManager(user);
+        return new InMemoryUserDetailsManager(user, admin);
     }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws  Exception {
         http.authorizeHttpRequests((authz) ->
-                authz.anyRequest().authenticated())
+                authz.requestMatchers("/api/user").hasRole("USER")
+                        .requestMatchers("/api/admin").hasRole("ADMIN")
+                        .requestMatchers("/api/both").hasAnyRole("USER", "ADMIN")
+                        .anyRequest().authenticated())
                 .httpBasic(Customizer.withDefaults());
         return http.build();
     }

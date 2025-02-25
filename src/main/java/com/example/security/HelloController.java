@@ -5,9 +5,19 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class HelloController {
-    @GetMapping("/api/hello")
-    public String hello(){
-        return  "Hello, Secure World";
+    @GetMapping("/api/user")
+    public String userEndPoint() {
+        return  "Hello, User";
+    }
+
+    @GetMapping("/api/admin")
+    public String adminEndPoint() {
+        return  "Hello, Admin";
+    }
+
+    @GetMapping("/api/both")
+    public String bothEndPoint() {
+        return  "Hello, User Or Admin";
     }
 
 }
